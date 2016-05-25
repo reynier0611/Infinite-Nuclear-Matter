@@ -1,6 +1,6 @@
 void OneTwoBody_Or(){
 
-	const int N = 90000;         //Originally set to 10000 by Or. Currently running with 90000
+	const int N = 1000;         //Originally set to 10000 by Or. Currently running with 90000
 	Double_t P1[N+10][3];       //Momentum vector for 1 nucleon
 	Double_t P[N+10];
 	Double_t Prel[3], Pcm[3];
@@ -49,13 +49,13 @@ void OneTwoBody_Or(){
 
 		if( P[i]>250/197.3 ){ //Above k fermi
 
-			Pcm[0] = gRandom->Gaus(0,140)/197.3;
-			Pcm[1] = gRandom->Gaus(0,140)/197.3;
-			Pcm[2] = gRandom->Gaus(0,140)/197.3;
+			//Pcm[0] = gRandom->Gaus(0,140)/197.3;
+			//Pcm[1] = gRandom->Gaus(0,140)/197.3;
+			//Pcm[2] = gRandom->Gaus(0,140)/197.3;
 			
-			//Pcm[0] = 0.;
-                        //Pcm[1] = 0.;
-                        //Pcm[2] = 0.;
+			Pcm[0] = 0.;
+                        Pcm[1] = 0.;
+                        Pcm[2] = 0.;
 			
 			// This next piece constructs correlated pair
 			P1[i+1][0] = Pcm[0]-P1[i][0];
@@ -150,14 +150,12 @@ void OneTwoBody_Or(){
 	// Drawing the histograms
 	leg = new TLegend(0.6,0.6,0.89,0.89);
 	leg->SetTextSize(0.05);
-	//leg->AddEntry((TObject*)0, "2-body", "");
 	leg->AddEntry(	hist_2body[0]		,"Total");
 	leg->AddEntry(	hist_2body_MF[0]	,"MF - MF");
 	leg->AddEntry(	hist_2body_SRC_MF[0] 	,"MF - SRC");
 	leg->AddEntry(	hist_2body_SRC[0]	,"SRC - SRC");
 	leg->AddEntry(	hist_2body_RealSRC[0]	,"True SRC");
-	//leg->AddEntry((TObject*)0, "1-body", "");
-	//leg->AddEntry(	hist_1body		,"Total");
+	
 	int ci = 925;
 	color = new TColor(ci, 0, 0, 0, " ", 0);
 	leg->SetLineColor(ci);
@@ -220,7 +218,7 @@ void OneTwoBody_Or(){
         Pretty2D(h2_SRC_MF   , 3);
 	Pretty2D(h2_true_SRC , 0);
 
-	TCanvas *can2 = new TCanvas("can2","3",900,900);
+	TCanvas *can2 = new TCanvas("can2","3",1200,800);
 	can2 -> Divide(2,2);
 	can2->cd(1);	h2_SRC_SRC  -> Draw("colz");
 	can2->cd(4);	h2_true_SRC -> Draw("colz");
@@ -261,12 +259,13 @@ void Pretty(TH1F *gP, int k, int opt){
 	//gP -> SetLineStyle(linestyle);
 	gP -> SetLineColor(color);
 	gP -> SetMarkerColor(color);
-	gP -> GetXaxis()->SetTitle("k[fm^{-1}]");	
+	gP -> GetXaxis()->SetTitle("q[fm^{-1}]");	
+	gP -> GetXaxis()->SetRangeUser(0,5);
 	gP -> GetXaxis()->SetTitleSize(0.06);
-	gP ->GetXaxis()->SetRangeUser(0,5);
 	gP -> GetYaxis()->SetLabelSize (0.06);
 	gP -> GetXaxis()->SetLabelSize (0.07); 
 	gP -> GetXaxis()->SetNdivisions(505);	
+	gStyle->SetTitleSize(0.09,"t");
 }
 
 // ****************************************************************************************
@@ -282,7 +281,7 @@ void AddTitle(TH1F *gP ,int opt){
 }
 
 // ****************************************************************************************
-// Function to format plots
+// Function to format 2D plots
 // ****************************************************************************************
 void Pretty2D(TH2F *gP, int k){
         int color;
@@ -299,6 +298,13 @@ void Pretty2D(TH2F *gP, int k){
         gP -> GetXaxis()->SetTitle("q[fm^{-1}]");
         gP -> GetYaxis()->SetTitle("Q[fm^{-1}]");
 	gP -> GetYaxis()-> SetTitleOffset(1.4);
+	gP -> GetYaxis()->SetTitleSize(0.055);
+	gP -> GetXaxis()->SetTitleSize(0.055);
+        gP -> GetYaxis()->SetLabelSize(0.055);
+        gP -> GetXaxis()->SetLabelSize(0.055);
+	gStyle->SetTitleSize(0.07,"t");
+	gP -> GetXaxis()->SetTitleOffset(0.85);
+	gP -> GetYaxis()->SetTitleOffset(0.60);
 }
 
 
